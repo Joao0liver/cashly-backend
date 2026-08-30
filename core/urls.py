@@ -22,4 +22,5 @@ urlpatterns = [
     path('', default_urlconf, name='home'),
     path('admin/', admin.site.urls),
     path('vendas/', include('vendas.urls')),
+    path('relatorios/', include('relatorios.urls')),
 ]

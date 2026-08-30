@@ -225,6 +225,19 @@ h1.h3 {
     border-color: #a91f1f !important;
 }
 
+/* Botão de outline */
+
+.btn-outline-primary {
+    color: #198754;
+    border-color: #198754;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+}
+
 
 /* =========================================================
    CARDS

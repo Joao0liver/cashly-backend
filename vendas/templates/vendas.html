@@ -22,7 +22,15 @@
             <h1 class="h3 mb-0">Fechamentos Registrados
                 <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ vendas|length }}</span>
             </h1>
-            <a href="{% url 'criar_vendas' %}" class="btn btn-primary">+ Novo Fechamento</a>
+            <div class="d-flex gap-2">
+                <a href="{% url 'relatorios' %}" class="btn btn-outline-primary">
+                    Relatórios
+                </a>
+
+                <a href="{% url 'criar_vendas' %}" class="btn btn-primary">
+                    + Novo Fechamento
+                </a>
+            </div>
         </div>
 
         {% if vendas %}

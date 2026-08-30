@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="text-center mb-5">
+    <h1 class="fw-bold">Relatórios</h1>
+    <p class="text-muted">
+        Gere relatórios de vendas por dia ou por mês.
+    </p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <form method="get" action="{% url 'relatorio_vendas_pdf' %}">
+
+                    <div class="mb-4">
+                        <label for="tipo" class="form-label fw-semibold">Tipo de relatório</label>
+                        <select name="tipo" id="tipo" class="form-select" required>
+                            <option value="" selected disabled>
+                                Selecione o tipo
+                            </option>
+
+                            <option value="dia">
+                                Dia específico
+                            </option>
+
+                            <option value="mes">
+                                Mês completo
+                            </option>
+                        </select>
+                    </div>
+
+                    <div id="campo-dia" class="mb-4 d-none">
+                        <label for="data" class="form-label fw-semibold">
+                            Data
+                        </label>
+                        <input type="date" name="data" id="data" class="form-control">
+                    </div>
+
+                    <div id="campo-mes" class="mb-4 d-none">
+                        <label for="mes" class="form-label fw-semibold">Mês</label>
+                        <input type="month" name="mes" id="mes" class="form-control">
+                    </div>
+
+                    <div class="d-grid">
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                        >
+                            Gerar relatório
+                        </button>
+                    </div>
+
+                </form>
+
+                {% if erro %}
+                    <div class="alert alert-warning mt-3" role="alert">
+                        {{ erro }}
+                    </div>
+                {% endif %}
+            </div>
+            <a href="{% url 'listar_vendas' %}" class="btn btn-outline-primary btn-outline-cashly">Fechamentos</a>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+
+const tipo = document.getElementById('tipo');
+
+const campoDia = document.getElementById('campo-dia');
+const campoMes = document.getElementById('campo-mes');
+
+const data = document.getElementById('data');
+const mes = document.getElementById('mes');
+
+
+tipo.addEventListener('change', function () {
+
+    campoDia.classList.add('d-none');
+    campoMes.classList.add('d-none');
+
+    data.removeAttribute('required');
+    mes.removeAttribute('required');
+
+
+    if (this.value === 'dia') {
+
+        campoDia.classList.remove('d-none');
+
+        data.setAttribute('required', 'required');
+
+    }
+
+
+    if (this.value === 'mes') {
+
+        campoMes.classList.remove('d-none');
+
+        mes.setAttribute('required', 'required');
+
+    }
+
+});
+
+</script>
+
+{% endblock %}
