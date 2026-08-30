@@ -27,61 +27,122 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Data</label>
-                        <!--
-                            name="nome" → deve ser igual ao que usamos em request.POST['nome'] na view
-                            value="..." → se for edição, o campo já vem preenchido com o valor atual
-                        -->
                         <input type="date" name="data" class="form-control"
-                               value="{{ vendas.data|default:'' }}"
+                               value="{{ venda.data|date:'Y-m-d' }}"
                                placeholder="" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Tipo de Pagamento</label>
-                        <input type="text" name="tipo_pagamento" class="form-control"
-                               value="{{ vendas.tipo_pagamento|default:'' }}"
-                               placeholder="Tipo de Pagamento" required>
+                        <select name="tipo_pagamento" class="form-select" required>
+
+                            <option value="">
+                                Tipo de Pagamento
+                            </option>
+
+                            <option
+                                value="DINHEIRO"
+                                {% if venda.tipo_pagamento == 'DINHEIRO' %}selected{% endif %}
+                            >
+                                Dinheiro
+                            </option>
+
+                            <option
+                                value="PIX"
+                                {% if venda.tipo_pagamento == 'PIX' %}selected{% endif %}
+                            >
+                                Pix
+                            </option>
+
+                            <option
+                                value="DEBITO"
+                                {% if venda.tipo_pagamento == 'DEBITO' %}selected{% endif %}
+                            >
+                                Débito
+                            </option>
+
+                            <option
+                                value="CREDITO"
+                                {% if venda.tipo_pagamento == 'CREDITO' %}selected{% endif %}
+                            >
+                                Crédito
+                            </option>
+
+                        </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Valor do Fechamento</label>
                         <input type="number" name="valor_total" class="form-control"
-                               value="{{ vendas.valor_total|default:'' }}"
-                               placeholder="" required>
+                               value="{{ venda.valor_total|default:'' }}"
+                               step="0.01" min="0"
+                               placeholder="0,00" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Bandeira do Cartão</label>
-                        <input type="text" name="bandeira_cartao" class="form-control"
-                               value="{{ vendas.bandeira_cartao|default:'' }}"
-                               placeholder="Bandeira do Cartão" required>
+                        <label for="bandeira_cartao" class="form-label fw-semibold">
+                            Bandeira do Cartão
+                        </label>
+
+                        <select name="bandeira_cartao" class="form-select">
+
+                            <option value="">
+                                Não se aplica!
+                            </option>
+
+                            <option
+                                value="VISA"
+                                {% if venda.bandeira_cartao == 'VISA' %}selected{% endif %}
+                            >
+                                Visa
+                            </option>
+
+                            <option
+                                value="MASTERCARD"
+                                {% if venda.bandeira_cartao == 'MASTERCARD' %}selected{% endif %}
+                            >
+                                Mastercard
+                            </option>
+
+                            <option
+                                value="ELO"
+                                {% if venda.bandeira_cartao == 'ELO' %}selected{% endif %}
+                            >
+                                Elo
+                            </option>
+
+                        </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Responsável</label>
                         <input type="text" name="responsavel" class="form-control"
-                               value="{{ vendas.responsavel|default:'' }}"
+                               value="{{ venda.responsavel|default:'' }}"
                                placeholder="Responsável" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Número do Caixa</label>
                         <input type="text" name="num_caixa" class="form-control"
-                               value="{{ vendas.num_caixa|default:'' }}"
-                               placeholder="Número do Caixa" required>
+                               value="{{ venda.num_caixa|default:'' }}"
+                               placeholder="Ex.: Caixa 01">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Observação</label>
                         <textarea name="obs" class="form-control" rows="3"
-                                  placeholder="Escreva uma observação...">{{ vendas.obs|default:'' }}</textarea>
+                                  placeholder="Escreva uma observação...">{{ venda.obs|default:'' }}</textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Conferido</label>
-                        <input type="" name="conferido" class="form-control"
-                               value="{{ vendas.conferido|default:'' }}"
-                               placeholder="Conferido" required>
+                        <div class="form-check">
+
+                            <input type="checkbox" name="conferido" class="form-check-input" {% if venda.conferido %}checked{% endif %}>
+
+                            <label for="conferido" class="form-check-label fw-semibold">
+                                Venda conferida
+                            </label>
+
+                        </div>
                     </div>
 
                     <div class="d-flex gap-2">

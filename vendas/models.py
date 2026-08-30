@@ -1,8 +1,9 @@
 from django.db import models
+from django.utils import timezone
 
 class Vendas(models.Model):
 
-    data = models.DateField()
+    data = models.DateField(default=timezone.localdate)
 
     TIPO_PAGAMENTO = [
         ('DINHEIRO', 'Dinheiro'),
@@ -22,7 +23,7 @@ class Vendas(models.Model):
 
     bandeira_cartao = models.CharField(max_length=30, choices=BANDEIRA_CARTAO, blank=True)
     responsavel = models.CharField(max_length=100)
-    num_caixa =  models.CharField(max_length=20)
+    num_caixa =  models.CharField(max_length=20, blank=True)
     obs = models.TextField(blank=True)
     conferido = models.BooleanField(default=False)
 
