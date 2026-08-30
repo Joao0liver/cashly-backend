@@ -2,3 +2,10 @@
 venv/
 .venv/
 env/
+
+# Python
+#__pycache__/
+#*.py[cod]
+
+# Banco de dados
+#db.sqlite3

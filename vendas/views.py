@@ -5,6 +5,11 @@ def listar_vendas(request):
     vendas = Vendas.objects.all()
     return render(request, 'vendas.html', {'vendas': vendas})
 
+def detalhe_venda(request, pk):
+    venda = get_object_or_404(Vendas, pk=pk)
+
+    return render(request, 'detalhe_vendas.html', {'venda': venda})
+
 def criar_vendas(request):
     if request.method == 'POST':
         data = request.POST['data']
@@ -49,4 +54,3 @@ def excluir_vendas(request, pk):
         return redirect('listar_vendas')
 
     return render(request, 'confirmar_exclusao.html', {'venda': venda})
-
