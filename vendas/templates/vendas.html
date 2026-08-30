@@ -3,47 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área do Aluno</title>
+    <title>Cashly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
     <nav class="navbar navbar-dark bg-dark mb-4">
         <div class="container">
-            <span class="navbar-brand mb-0 h1">🎓 Área do Aluno</span>
+            <span class="navbar-brand mb-0 h1">Cashly</span>
         </div>
     </nav>
 
     <main class="container pb-5">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1 class="h3 mb-0">Alunos cadastrados
-                <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ alunos|length }}</span>
+            <h1 class="h3 mb-0">Fechamentos Registrados
+                <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ vendas|length }}</span>
             </h1>
-            <a href="{% url 'criar_aluno' %}" class="btn btn-primary">➕ Novo Aluno</a>
+            <a href="{% url '' %}" class="btn btn-primary">➕ Novo Fechamento</a>
         </div>
 
-        {% if alunos %}
+        {% if vendas %}
         <div class="card shadow-sm">
             <div class="table-responsive">
                 <table class="table table-striped table-hover align-middle mb-0">
                     <thead class="table-dark">
                         <tr>
-                            <th>Nome</th>
-                            <th>Curso</th>
-                            <th>Bio</th>
+                            <th>Data</th>
+                            <th>Tipo de Pagamento</th>
+                            <th>Valor Total</th>
+                            <th>Bandeira do Cartão</th>
+                            <th>Responsável</th>
+                            <th>Número do Caixa</th>
+                            <th>Observação</th>
+                            <th>Conferido</th>
                             <th class="text-center">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for aluno in alunos %}
+                        {% for venda in vendas %}
                         <tr>
-                            <td class="fw-semibold">{{ aluno.nome }}</td>
-                            <td><span class="badge bg-secondary">{{ aluno.curso }}</span></td>
-                            <td class="text-muted">{{ aluno.bio|default:"—" }}</td>
+                            <td class="fw-semibold">{{ vendas.data }}</td>
+                            <td><span class="badge bg-secondary">{{ vendas.tipo_pagamento }}</span></td>
+                            <td class="text-muted">{{ vendas.valor_total }}</td>
+                            <td class="fw-semibold">{{ vendas.bandeira_cartao }}</td>
+                            <td class="fw-semibold">{{ vendas.responsavel }}</td>
+                            <td class="fw-semibold">{{ vendas.num_caixa }}</td>
+                            <td class="fw-semibold">{{ vendas.obs }}</td>
+                            <td class="fw-semibold">{{ vendas.conferido }}</td>
                             <td class="text-center">
-                                <a href="{% url 'editar_aluno' aluno.pk %}" class="btn btn-sm btn-warning me-1">✏️ Editar</a>
-                                <a href="{% url 'excluir_aluno' aluno.pk %}" class="btn btn-sm btn-danger">🗑️ Excluir</a>
+                                <a href="{% url '' vendas.pk %}" class="btn btn-sm btn-warning me-1">✏️ Editar</a>
+                                <a href="{% url '' vendas.pk %}" class="btn btn-sm btn-danger">🗑️ Excluir</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -53,8 +63,8 @@
         </div>
         {% else %}
         <div class="alert alert-warning" role="alert">
-            Nenhum aluno cadastrado ainda.
-            <a href="{% url 'criar_aluno' %}" class="alert-link">Cadastre o primeiro!</a>
+            Nenhum fechamento registrado ainda.
+            <a href="{% url '' %}" class="alert-link">Cadastre o primeiro!</a>
         </div>
         {% endif %}
 
