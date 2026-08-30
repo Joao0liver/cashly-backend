@@ -27,4 +27,5 @@ class Vendas(models.Model):
     conferido = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.valor_total
+        pagamento = self.get_tipo_pagamento_display()
+        return f"{self.data.strftime('%d/%m/%Y')} - R$ {self.valor_total:.2f} - {pagamento} - {self.responsavel}"

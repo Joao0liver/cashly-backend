@@ -20,7 +20,7 @@
             <h1 class="h3 mb-0">Fechamentos Registrados
                 <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ vendas|length }}</span>
             </h1>
-            <a href="{% url '' %}" class="btn btn-primary">➕ Novo Fechamento</a>
+            <a href="{% url 'criar_vendas' %}" class="btn btn-primary">➕ Novo Fechamento</a>
         </div>
 
         {% if vendas %}
@@ -43,17 +43,17 @@
                     <tbody>
                         {% for venda in vendas %}
                         <tr>
-                            <td class="fw-semibold">{{ vendas.data }}</td>
-                            <td><span class="badge bg-secondary">{{ vendas.tipo_pagamento }}</span></td>
-                            <td class="text-muted">{{ vendas.valor_total }}</td>
-                            <td class="fw-semibold">{{ vendas.bandeira_cartao }}</td>
-                            <td class="fw-semibold">{{ vendas.responsavel }}</td>
-                            <td class="fw-semibold">{{ vendas.num_caixa }}</td>
-                            <td class="fw-semibold">{{ vendas.obs }}</td>
-                            <td class="fw-semibold">{{ vendas.conferido }}</td>
+                            <td class="fw-semibold">{{ venda.data }}</td>
+                            <td><span class="badge bg-secondary">{{ venda.tipo_pagamento }}</span></td>
+                            <td class="text-muted">{{ venda.valor_total }}</td>
+                            <td class="fw-semibold">{{ venda.bandeira_cartao }}</td>
+                            <td class="fw-semibold">{{ venda.responsavel }}</td>
+                            <td class="fw-semibold">{{ venda.num_caixa }}</td>
+                            <td class="fw-semibold">{{ venda.obs }}</td>
+                            <td class="fw-semibold">{{ venda.conferido }}</td>
                             <td class="text-center">
-                                <a href="{% url '' vendas.pk %}" class="btn btn-sm btn-warning me-1">✏️ Editar</a>
-                                <a href="{% url '' vendas.pk %}" class="btn btn-sm btn-danger">🗑️ Excluir</a>
+                                <a href="{% url 'editar_vendas' venda.pk %}" class="btn btn-sm btn-warning me-1">✏️ Editar</a>
+                                <a href="{% url 'excluir_vendas' venda.pk %}" class="btn btn-sm btn-danger">🗑️ Excluir</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -64,7 +64,7 @@
         {% else %}
         <div class="alert alert-warning" role="alert">
             Nenhum fechamento registrado ainda.
-            <a href="{% url '' %}" class="alert-link">Cadastre o primeiro!</a>
+            <a href="{% url 'criar_vendas' %}" class="alert-link">Cadastre o primeiro!</a>
         </div>
         {% endif %}
 
