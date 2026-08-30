@@ -50,7 +50,7 @@
                             <td class="fw-semibold">{{ venda.responsavel }}</td>
                             <td class="fw-semibold">{{ venda.num_caixa }}</td>
                             <td class="fw-semibold">{{ venda.obs }}</td>
-                            <td class="fw-semibold">{{ venda.conferido }}</td>
+                            <td class="fw-semibold">{% if venda.conferido == True %}✅{% else %}❌{% endif %}</td>
                             <td class="text-center">
                                 <a href="{% url 'editar_vendas' venda.pk %}" class="btn btn-sm btn-warning me-1">✏️ Editar</a>
                                 <a href="{% url 'excluir_vendas' venda.pk %}" class="btn btn-sm btn-danger">🗑️ Excluir</a>

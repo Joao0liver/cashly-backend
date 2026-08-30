@@ -19,7 +19,9 @@ def criar_vendas(request):
         Vendas.objects.create(data=data, tipo_pagamento=tipo_pagamento, valor_total=valor_total, bandeira_cartao=bandeira_cartao, responsavel=responsavel, num_caixa=num_caixa, obs=obs, conferido=conferido)
         return redirect('listar_vendas')
 
-    return render(request, 'form_vendas.html', {'titulo': 'Novo Fechamento'})
+    venda = Vendas()
+
+    return render(request, 'form_vendas.html', {'venda': venda, 'titulo': 'Novo Fechamento'})
 
 def editar_vendas(request, pk):
     venda = get_object_or_404(Vendas, pk=pk)
@@ -39,8 +41,12 @@ def editar_vendas(request, pk):
 
     return render(request, 'form_vendas.html', {'venda': venda, 'titulo': 'Editar Fechamento'})
 
-    
-
 def excluir_vendas(request, pk):
-    return 0
+    venda = venda = get_object_or_404(Vendas, pk=pk)
+
+    if request.method == 'POST':
+        venda.delete()
+        return redirect('listar_vendas')
+
+    return render(request, 'confirmar_exclusao.html', {'venda': venda})
 
