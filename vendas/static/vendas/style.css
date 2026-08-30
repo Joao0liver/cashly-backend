@@ -1,0 +1,667 @@
+/* =========================================================
+   CASHLY
+   Sistema de Fechamento de Caixa
+   ========================================================= */
+
+
+/* =========================================================
+   VARIÁVEIS
+   ========================================================= */
+
+:root {
+    --verde-escuro: #123524;
+    --verde-principal: #176b3a;
+    --verde: #218c4a;
+    --verde-claro: #e8f5ec;
+    --verde-hover: #155c32;
+
+    --dourado: #c99a2e;
+    --dourado-claro: #fff8e5;
+
+    --fundo: #f4f7f5;
+    --branco: #ffffff;
+
+    --texto: #1f2933;
+    --texto-secundario: #667085;
+
+    --borda: #dfe7e2;
+
+    --vermelho: #c62828;
+    --vermelho-claro: #fdecec;
+
+    --sombra: 0 4px 18px rgba(18, 53, 36, 0.08);
+    --sombra-hover: 0 8px 25px rgba(18, 53, 36, 0.13);
+
+    --raio: 10px;
+}
+
+
+/* =========================================================
+   CONFIGURAÇÕES GERAIS
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body.bg-light {
+    background: var(--fundo) !important;
+    color: var(--texto);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    background: var(--verde-escuro) !important;
+    min-height: 70px;
+    padding: 0.8rem 0;
+    margin-bottom: 2rem !important;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: var(--branco) !important;
+
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand::first-letter {
+    color: #d9ad3f;
+}
+
+.navbar-brand:hover {
+    color: #f2f7f3 !important;
+}
+
+
+/* =========================================================
+   CONTAINER PRINCIPAL
+   ========================================================= */
+
+main.container {
+    padding-bottom: 3rem !important;
+}
+
+
+/* =========================================================
+   TÍTULOS
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--verde-escuro);
+}
+
+h1.h3 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge {
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 0.42em 0.75em;
+}
+
+.badge.bg-primary {
+    background: var(--verde) !important;
+}
+
+.badge.bg-secondary {
+    background: var(--verde-claro) !important;
+    color: var(--verde-escuro) !important;
+}
+
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.55rem 1rem;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* Botão principal */
+
+.btn-primary {
+    background: var(--verde-principal) !important;
+    border-color: var(--verde-principal) !important;
+    color: var(--branco) !important;
+
+    box-shadow: 0 2px 5px rgba(23, 107, 58, 0.18);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: var(--verde-hover) !important;
+    border-color: var(--verde-hover) !important;
+
+    box-shadow: 0 4px 10px rgba(23, 107, 58, 0.25);
+}
+
+
+/* Botão secundário */
+
+.btn-secondary {
+    background: #eef1ef !important;
+    border-color: #d8dfda !important;
+    color: var(--texto) !important;
+}
+
+.btn-secondary:hover {
+    background: #e1e7e3 !important;
+    border-color: #cbd5ce !important;
+}
+
+
+/* Botão de edição */
+
+.btn-warning {
+    background: var(--dourado) !important;
+    border-color: var(--dourado) !important;
+    color: #ffffff !important;
+}
+
+.btn-warning:hover {
+    background: #b48724 !important;
+    border-color: #b48724 !important;
+}
+
+
+/* Botão de exclusão */
+
+.btn-danger {
+    background: var(--vermelho) !important;
+    border-color: var(--vermelho) !important;
+    color: var(--branco) !important;
+}
+
+.btn-danger:hover {
+    background: #a91f1f !important;
+    border-color: #a91f1f !important;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.card {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+
+    box-shadow: var(--sombra);
+
+    overflow: hidden;
+}
+
+
+/* Hover apenas para cards que não são de exclusão */
+
+.card:not(.border-danger):hover {
+    box-shadow: var(--sombra-hover);
+}
+
+
+/* =========================================================
+   CARD DA LISTAGEM
+   ========================================================= */
+
+.card.shadow-sm {
+    border: 1px solid var(--borda);
+}
+
+
+/* =========================================================
+   TABELA
+   ========================================================= */
+
+.table {
+    margin-bottom: 0;
+    color: var(--texto);
+}
+
+
+/* Cabeçalho */
+
+.table thead.table-dark {
+    background: var(--verde-escuro) !important;
+    border-color: var(--verde-escuro);
+}
+
+.table thead.table-dark th {
+    background: var(--verde-escuro) !important;
+    color: var(--branco) !important;
+
+    border: none;
+    padding: 1rem 0.85rem;
+
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+}
+
+
+/* Corpo */
+
+.table tbody td {
+    padding: 0.9rem 0.85rem;
+    vertical-align: middle;
+
+    border-color: #e8ede9;
+}
+
+
+/* Linhas */
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: #fafcfb;
+}
+
+.table-hover > tbody > tr:hover > * {
+    background-color: var(--verde-claro);
+}
+
+
+/* Valor */
+
+.table td.text-muted {
+    color: var(--verde-principal) !important;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   AÇÕES DA TABELA
+   ========================================================= */
+
+.table .btn-sm {
+    font-size: 0.8rem;
+    padding: 0.42rem 0.7rem;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+form {
+    width: 100%;
+}
+
+
+/* Labels */
+
+.form-label {
+    color: var(--texto);
+    font-size: 0.9rem;
+    margin-bottom: 0.45rem;
+}
+
+
+/* Inputs */
+
+.form-control,
+.form-select {
+    border: 1px solid #d5ddd8;
+    border-radius: 8px;
+
+    color: var(--texto);
+    background-color: var(--branco);
+
+    padding: 0.65rem 0.8rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Placeholder */
+
+.form-control::placeholder {
+    color: #9aa5a0;
+}
+
+
+/* Focus */
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(33, 140, 74, 0.12);
+
+    outline: none;
+}
+
+
+/* Input de valor */
+
+input[name="valor_total"] {
+    font-weight: 600;
+    color: var(--verde-escuro);
+}
+
+
+/* Textarea */
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 90px;
+}
+
+
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-check-input {
+    width: 1.1rem;
+    height: 1.1rem;
+
+    margin-top: 0;
+
+    border-color: #b8c5bd;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--verde);
+    border-color: var(--verde);
+}
+
+.form-check-input:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(33, 140, 74, 0.12);
+}
+
+.form-check-label {
+    cursor: pointer;
+    color: var(--texto);
+}
+
+
+/* =========================================================
+   CABEÇALHO DO FORMULÁRIO
+   ========================================================= */
+
+.card-header.bg-primary {
+    background: var(--verde-escuro) !important;
+    border-bottom: none;
+
+    padding: 1.1rem 1.4rem;
+}
+
+.card-header.bg-primary h1 {
+    color: var(--branco) !important;
+}
+
+
+/* =========================================================
+   CORPO DO FORMULÁRIO
+   ========================================================= */
+
+.card-body {
+    padding: 1.5rem;
+}
+
+
+/* =========================================================
+   ALERTA — NENHUM REGISTRO
+   ========================================================= */
+
+.alert.alert-warning {
+    background: var(--dourado-claro);
+    border: 1px solid #efdca5;
+    color: #69531b;
+
+    border-radius: var(--raio);
+
+    padding: 1rem 1.15rem;
+}
+
+.alert-warning .alert-link {
+    color: #8b6b15;
+    font-weight: 700;
+}
+
+.alert-warning .alert-link:hover {
+    color: #654e0e;
+}
+
+
+/* =========================================================
+   TELA DE EXCLUSÃO
+   ========================================================= */
+
+.card.border-danger {
+    border: 1px solid #f0c5c5 !important;
+}
+
+.card.border-danger .card-header.bg-danger {
+    background: var(--vermelho) !important;
+    border-color: var(--vermelho) !important;
+
+    padding: 1.1rem 1.4rem;
+}
+
+.card.border-danger .card-header h1 {
+    color: var(--branco) !important;
+}
+
+.card.border-danger .card-body {
+    padding: 1.5rem;
+}
+
+.card.border-danger .text-danger {
+    color: var(--vermelho) !important;
+}
+
+
+/* =========================================================
+   TEXTO DA CONFIRMAÇÃO DE EXCLUSÃO
+   ========================================================= */
+
+.card.border-danger .fw-bold {
+    color: var(--texto) !important;
+
+    background: #fafafa;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+
+    padding: 0.8rem 1rem;
+}
+
+
+/* =========================================================
+   ESPAÇAMENTO DOS BOTÕES
+   ========================================================= */
+
+.d-flex.gap-2 {
+    margin-top: 0.5rem;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 992px) {
+
+    .table {
+        min-width: 900px;
+    }
+
+    .table-responsive {
+        border-radius: var(--raio);
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .navbar {
+        min-height: 62px;
+    }
+
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+
+    h1.h3 {
+        font-size: 1.4rem;
+    }
+
+    main.container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .d-flex.justify-content-between.align-items-center.mb-3 {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem;
+    }
+
+    .d-flex.justify-content-between.align-items-center.mb-3 .btn {
+        width: 100%;
+    }
+
+    .card-body {
+        padding: 1.15rem;
+    }
+
+    .d-flex.gap-2 {
+        flex-direction: column;
+    }
+
+    .d-flex.gap-2 .btn {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .navbar .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.15rem;
+    }
+
+    .card {
+        border-radius: 8px;
+    }
+
+    .card-header.bg-primary,
+    .card.border-danger .card-header.bg-danger {
+        padding: 1rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+.btn-search,
+.btn-pen,
+.btn-hover {
+    background: transparent !important;
+    border: none !important;
+    color: var(--verde-principal) !important;
+
+    padding: 0.45rem 0.6rem;
+
+    box-shadow: none !important;
+}
+
+.btn-search:hover,
+.btn-pen:hover,
+.btn-trash:hover {
+    background: var(--verde-claro) !important;
+    color: var(--verde-escuro) !important;
+
+    transform: none;
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* =========================================================
+   CENTRALIZAÇÃO DOS REGISTROS
+   ========================================================= */
+
+.table th,
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
