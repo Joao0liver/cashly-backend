@@ -47,7 +47,7 @@ def editar_vendas(request, pk):
     return render(request, 'form_vendas.html', {'venda': venda, 'titulo': 'Editar Fechamento'})
 
 def excluir_vendas(request, pk):
-    venda = venda = get_object_or_404(Vendas, pk=pk)
+    venda = get_object_or_404(Vendas, pk=pk)
 
     if request.method == 'POST':
         venda.delete()
