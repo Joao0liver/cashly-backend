@@ -1,6 +1,9 @@
 /* =========================================================
    CASHLY
    Sistema de Fechamento de Caixa
+
+O CSS fica em uma pasta static pois é um arquivo que não é necessário para a página funcionar,
+ou seja, não é processada necessariamente pelo Django
    ========================================================= */
 
 
