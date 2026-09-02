@@ -1,23 +1,28 @@
 from datetime import datetime
-from calendar import monthrange
+from calendar import monthrange # Informa quantos dias existem em um determinado mês
 
 from django.db.models import Sum
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
+# Biblioteca utilizada para criar o arquivo .pdf
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import mm
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT # Alinhamento
+from reportlab.lib.pagesizes import A4 # Tamanho da página
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle # Estilos
+from reportlab.lib.units import mm # Medida utilizada (milímetros)
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle,)
 
+# Importa o model do app vendas
 from vendas.models import Vendas
 
+# Renderiza o template
 def relatorios(request):
     return render(request, 'relatorios.html')
 
+# Função que formata o valor na moeda brasileira (reais)
 def formatar_moeda(valor):
+    # Transforma em string e substitui o ponto por vírgula e vice-versa
     return (
         f'R$ {valor:,.2f}'
         .replace(',', 'X')
@@ -25,16 +30,20 @@ def formatar_moeda(valor):
         .replace('X', '.')
     )
 
+# Função que gera o arquivo .pdf
 def relatorio_vendas_pdf(request):
 
+    # Resgata o parâmetro "tipo" da URL (dia ou mês)
     tipo = request.GET.get('tipo')
 
+    # Inicializa as variáveis de data
     data_inicio = None
     data_fim = None
     periodo = ''
 
     if tipo == 'dia':
 
+        # Resgata o parâmetro "data" da URL
         data = request.GET.get('data')
 
         if not data:
@@ -44,20 +53,20 @@ def relatorio_vendas_pdf(request):
             )
 
         try:
+            # Converte a string em objeto date
             data_inicio = datetime.strptime(
                 data,
                 '%Y-%m-%d'
             ).date()
-
         except ValueError:
+            # Caso a data resgatada esteja em um formato errado
             return HttpResponse(
                 'Data inválida.',
                 status=400
             )
 
-        data_fim = data_inicio
-
-        periodo = data_inicio.strftime('%d/%m/%Y')
+        data_fim = data_inicio # Relatório de dia único
+        periodo = data_inicio.strftime('%d/%m/%Y') # Formata a data
 
     elif tipo == 'mes':
 
@@ -74,34 +83,38 @@ def relatorio_vendas_pdf(request):
                 mes,
                 '%Y-%m'
             )
-
         except ValueError:
             return HttpResponse(
                 'Mês inválido.',
                 status=400
             )
 
-        ano = data_mes.year
-        numero_mes = data_mes.month
+        ano = data_mes.year # Pega apenas o ano da data
+        numero_mes = data_mes.month # Pega apenas o mês da data
 
+        # Define o dia da data inicial como 1 do mês-ano escolhido
         data_inicio = data_mes.date().replace(
             day=1
         )
 
+        # Função retorno o último dia daquele mês-ano
         ultimo_dia = monthrange(
             ano,
             numero_mes
         )[1]
 
+        # Define o dia da data final como o último dia do mês-ano escolhido
         data_fim = data_mes.date().replace(
             day=ultimo_dia
         )
 
+        # String range do período que será usada no .pdf
         periodo = (
             f'{data_inicio.strftime("%d/%m/%Y")} – '
             f'{data_fim.strftime("%d/%m/%Y")}'
         )
 
+    # Caso seja outro tipo de relatório fora dia único ou mês
     else:
 
         return HttpResponse(
@@ -109,11 +122,13 @@ def relatorio_vendas_pdf(request):
             status=400
         )
 
+    # Busca no banco todos os registros entre as datas X e Y, ordenando-os por data
     fechamentos = Vendas.objects.filter(
-        data__gte=data_inicio,
-        data__lte=data_fim
+        data__gte=data_inicio, # gte - maior ou igual a data início
+        data__lte=data_fim # lte - menor ou igual a data fim
     ).order_by('data')
 
+    # Se não existirem registros
     if not fechamentos.exists():
         return render(
             request,
@@ -126,13 +141,15 @@ def relatorio_vendas_pdf(request):
             }
         )
 
+    # Soma os valores dos registros retornados - Cálcula o fechamento total
     valor_movimentado = (
         fechamentos.aggregate(
             total=Sum('valor_total')
-        )['total']
-        or 0
+        )['total'] # Retorna um dicionário contendo a relação de somas
+        or 0 # Caso a soma seja None, retorna 0
     )
 
+    # Soma os valores agrupando por tipo de pagamento
     valores_por_pagamento = (
         fechamentos
         .values('tipo_pagamento')
@@ -144,21 +161,25 @@ def relatorio_vendas_pdf(request):
 
     valores_pagamento = {}
 
+    # Armazena as somas por tipo em um dicionário
     for item in valores_por_pagamento:
 
         valores_pagamento[
             item['tipo_pagamento']
         ] = item['total'] or 0
 
+    # Indica ao navegador que se trata de uma resposta HTTP em .pdf
     response = HttpResponse(
         content_type='application/pdf'
     )
 
+    # Indica que a disposição do conteúdo será "abertura na mesma janela" (inline)
     response['Content-Disposition'] = (
         'inline; '
         'filename="relatorio_vendas.pdf"'
     )
 
+    # Criação do arquivo .pdf - indica instruções para a base da formatação
     doc = SimpleDocTemplate(
         response,
         pagesize=A4,
@@ -168,8 +189,10 @@ def relatorio_vendas_pdf(request):
         bottomMargin=15 * mm,
     )
 
+    # Resgata estilos prontos fornecidos pela biblioteca
     styles = getSampleStyleSheet()
 
+    # Define estilos personalizados para certos atributos /
     estilo_titulo = ParagraphStyle(
         'Titulo',
         parent=styles['Heading1'],
@@ -213,13 +236,16 @@ def relatorio_vendas_pdf(request):
         parent=estilo_texto,
         alignment=TA_RIGHT,
     )
+    # /
 
+    # Corpo do .pdf
     elementos = []
 
+    # Adiciona o título ao corpo (parágrafo)
     elementos.append(
         Paragraph(
-            'CASHLY',
-            estilo_titulo
+            'CASHLY', # O texto que será escrito
+            estilo_titulo # O estilo aplicado
         )
     )
 
@@ -255,6 +281,7 @@ def relatorio_vendas_pdf(request):
         )
     )
 
+    # Tabela resumo do valor total em reais do respectivo período
     resumo = [
         [
             Paragraph(
@@ -268,6 +295,7 @@ def relatorio_vendas_pdf(request):
         ]
     ]
 
+    # Define a coluna da tabela resumo
     tabela_resumo = Table(
         resumo,
         colWidths=[
@@ -276,6 +304,7 @@ def relatorio_vendas_pdf(request):
         ]
     )
 
+    # Define o estilo da tabela resumo
     tabela_resumo.setStyle(
         TableStyle([
             (
@@ -290,7 +319,7 @@ def relatorio_vendas_pdf(request):
                 (-1, -1),
                 0.7,
                 colors.HexColor('#176B3A')
-            ),
+            ), # BOX - borda
             (
                 'LEFTPADDING',
                 (0, 0),
@@ -318,6 +347,7 @@ def relatorio_vendas_pdf(request):
         ])
     )
 
+    # Adiciona a tabela ao corpo
     elementos.append(
         tabela_resumo
     )
@@ -333,6 +363,7 @@ def relatorio_vendas_pdf(request):
         )
     )
 
+    # Relação do model para os tipos de pagamento
     tipos_pagamento = [
         ('DINHEIRO', 'Dinheiro'),
         ('PIX', 'Pix'),
@@ -342,11 +373,13 @@ def relatorio_vendas_pdf(request):
 
     dados_pagamento = []
 
+    # Percorre os valores armazenados anteriormente - da soma por tipo de pagamento
     for item in valores_por_pagamento:
 
         codigo = item['tipo_pagamento']
         valor = item['total'] or 0
 
+        # Resgata o nome amigável definido no model de vendas
         nome = dict(
             Vendas.TIPO_PAGAMENTO
         ).get(
@@ -354,6 +387,7 @@ def relatorio_vendas_pdf(request):
             codigo
         )
 
+        # Armazena os valores na lista para formatação da tabela
         dados_pagamento.append([
             Paragraph(
                 nome,
@@ -365,6 +399,7 @@ def relatorio_vendas_pdf(request):
             )
         ])
 
+    # Define quais dados usados e formatação das colunas
     tabela_pagamento = Table(
         dados_pagamento,
         colWidths=[
@@ -418,6 +453,7 @@ def relatorio_vendas_pdf(request):
         ])
     )
 
+    # Adiciona ao corpo
     elementos.append(
         tabela_pagamento
     )
@@ -433,6 +469,7 @@ def relatorio_vendas_pdf(request):
         )
     )
 
+    # Define o cabeçalho da tabela que mostra todos os fechamentos do período
     dados_fechamentos = [
         [
             Paragraph('<b>Data</b>', estilo_texto),
@@ -443,6 +480,7 @@ def relatorio_vendas_pdf(request):
         ]
     ]
 
+    # Adiciona os registros de fechamento à tabela
     for fechamento in fechamentos:
 
         dados_fechamentos.append([
@@ -453,7 +491,7 @@ def relatorio_vendas_pdf(request):
                 estilo_texto
             ),
             Paragraph(
-                fechamento.get_tipo_pagamento_display(),
+                fechamento.get_tipo_pagamento_display(), # Resgata nome amigável
                 estilo_texto
             ),
             Paragraph(
@@ -472,20 +510,7 @@ def relatorio_vendas_pdf(request):
             ),
         ])
 
-    if not fechamentos.exists():
-
-        dados_fechamentos.append([
-            Paragraph(
-                'Não foram encontrados fechamentos '
-                'para o período selecionado.',
-                estilo_texto
-            ),
-            '',
-            '',
-            '',
-            '',
-        ])
-
+    # Define a tabela no documento e formata suas colunas
     tabela_fechamentos = Table(
         dados_fechamentos,
         colWidths=[
@@ -495,7 +520,7 @@ def relatorio_vendas_pdf(request):
             45 * mm,
             30 * mm,
         ],
-        repeatRows=1,
+        repeatRows=1, # Repete o cabeçalho caso a tabela seja grande e passe de uma página
     )
 
     tabela_fechamentos.setStyle(
@@ -561,6 +586,7 @@ def relatorio_vendas_pdf(request):
         ])
     )
 
+     # Adiciona ao corpo
     elementos.append(
         tabela_fechamentos
     )
@@ -569,10 +595,12 @@ def relatorio_vendas_pdf(request):
         Spacer(1, 10 * mm)
     )
 
+    # Define a data e hora da geração do relatório
     data_geracao = datetime.now().strftime(
         '%d/%m/%Y às %H:%M'
     )
 
+    # Adiciona ao corpo
     elementos.append(
         Paragraph(
             f'Gerado em: {data_geracao}',
@@ -580,6 +608,8 @@ def relatorio_vendas_pdf(request):
         )
     )
 
+    # Constrói o arquivo .pdf
     doc.build(elementos)
 
+    # Devolve ao navegador como resposta HTTP
     return response
