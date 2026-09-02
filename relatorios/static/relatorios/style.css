@@ -1,0 +1,129 @@
+/* =========================================
+RELATÓRIOS
+Complemento ao Bootstrap
+========================================= */
+
+.relatorio-card {
+border: 0;
+border-radius: 10px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.relatorio-card .card-header {
+background-color: #ffffff;
+border-bottom: 1px solid #eeeeee;
+padding: 1rem 1.25rem;
+}
+
+.relatorio-card .card-body {
+padding: 1.25rem;
+}
+
+.relatorio-titulo {
+color: #212529;
+font-weight: 600;
+}
+
+.relatorio-label {
+font-weight: 500;
+color: #212529;
+}
+
+.relatorio-opcoes {
+display: flex;
+gap: 0.5rem;
+}
+
+.relatorio-opcao {
+flex: 1;
+}
+
+.relatorio-opcao input {
+display: none;
+}
+
+.relatorio-opcao label {
+display: block;
+padding: 0.65rem 1rem;
+text-align: center;
+border: 1px solid #dee2e6;
+border-radius: 6px;
+background-color: #fff;
+color: #495057;
+cursor: pointer;
+transition: 0.2s ease;
+}
+
+.relatorio-opcao label:hover {
+border-color: #198754;
+color: #198754;
+}
+
+.relatorio-opcao input:checked + label {
+border-color: #198754;
+background-color: #e8f5ec;
+color: #198754;
+font-weight: 500;
+}
+
+.relatorio-form-control {
+border-radius: 6px;
+}
+
+.relatorio-form-control:focus {
+border-color: #198754;
+box-shadow: 0 0 0 0.15rem rgba(25, 135, 84, 0.15);
+}
+
+.relatorio-btn {
+min-width: 170px;
+}
+
+.relatorio-alerta {
+border-radius: 6px;
+}
+
+@media (max-width: 576px) {
+
+.relatorio-opcoes {
+    flex-direction: column;
+}
+
+.relatorio-btn {
+    width: 100%;
+}
+
+}
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+/* Botão de outline */
+
+.btn-outline-primary {
+    color: #198754;
+    border-color: #198754;
+}
+
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+}
+
+/* Botão de outline cashly */
+
+.btn-outline-cashly {
+    color: #198754;
+    border-color: #198754;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.875rem;
+}
+
+.btn-outline-cashly:hover {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+}
